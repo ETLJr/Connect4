@@ -20,9 +20,9 @@ function makeBoard() {
   for (let i = 0; i< HEIGHT; i ++){
     let row=[];
     for (let j = 0; j<WIDTH; j ++){
-      board.push(row)
-    
+      row.push(null)
     }
+    board.push(row)
   }
 }
 
@@ -63,21 +63,12 @@ function makeHtmlBoard() {
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
   //return 0;
-  let placed = false
-  let y=5
-  while (y > -1 && placed===false){
-    const cell = document.getElementById(`${y}-${x}`)
-  if (cell.innerHTML === ''){
-    placed = true; 
-  } 
-   else{
-     y--; 
-   }
+  for (let y = HEIGHT - 1; y >= 0; y--) {
+    if (!board[y][x]) {
+      return y;
+    }
   }
-  if (y<0){
-    return null
-  }
-  return y;
+  return null;
   
 }
 
@@ -88,19 +79,8 @@ function placeInTable(y, x) {
   const piece = document.createElement('div');
   piece.classList.add('piece');
   piece.classList.add(`p${currPlayer}`)
-  let placed = false
-  //y=5
-  while (y > -1 && placed===false){
-    const cell = document.getElementById(`${y}-${x}`)
-  if (cell.innerHTML === ''){
-    cell.append(piece)
-    placed = true;
-    currPlayer = currPlayer === 1 ? 2 : 1;
-  }
-   else{
-     y--
-   }
-  }
+  const cell = document.getElementById(`${y}-${x}`)
+  cell.append(piece)
 }
 
 /** endGame: announce game end */
@@ -143,7 +123,7 @@ function handleClick(evt) {
    
   // switch players
   // TODO: switch currPlayer 1 <-> 2
- currPlayer= currPlayer=== 1 ? 2:1
+ currPlayer= currPlayer=== 1 ? 2 : 1
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -154,28 +134,15 @@ function checkForWin() {
     //  - cells: list of four (y, x) cells
     //  - returns true if all are legal coordinates & all match currPlayer
 
-    // return cells.every(
-    //   ([y, x]) =>
-    //     y >= 0 &&
-    //     y < HEIGHT &&
-    //     x >= 0 &&
-    //     x < WIDTH &&
-    //     board[y][x] === currPlayer
-    // );
     return cells.every(
-      ([y, x]) => {
-        const a = board[y][x] === currPlayer
-        
-        if ( y=== 0 && x===2){
-        }
-        return y >= 0 &&
+      ([y, x]) =>
+        y >= 0 &&
         y < HEIGHT &&
         x >= 0 &&
         x < WIDTH &&
-        a
-      }
-        
+        board[y][x] === currPlayer
     );
+   
   }
 
   // TODO: read and understand this code. Add comments to help you.
