@@ -153,11 +153,7 @@ function checkForWin() {
       let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
       let diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
       let diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
-      const a = _win(horiz);
-      const b = _win(vert);
-      const c = _win(diagDR);
-      const d = _win(diagDL);
-
+      
       if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
         return true;
       }
